@@ -23,10 +23,10 @@ export default class MentorGraph extends React.Component {
   render() {
 
         var rows=[];
-        this.state.data.forEach(function (result) {
+        this.state.data.forEach(function (result, i) {
          rows.push(
 
-         <div style={{textAlign:'left',margin: 20}}>
+         <div  key={i} style={{textAlign:'left',margin: 20}}>
           <Paper style={{height:15, width:15,display:'inline-block', backgroundColor:result['color']}} ></Paper>
           &nbsp; {result['mentorname']}
           </div>
@@ -38,7 +38,7 @@ export default class MentorGraph extends React.Component {
       return (
       <div>
        <h3>Mentor-Resource Status Graph</h3>
-       <div>
+       <div className="Piesvg">
         <PieChart
           slices={this.state.data}
         />

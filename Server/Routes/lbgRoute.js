@@ -103,7 +103,7 @@ router.get('/allTheEmployeesByMentorName/:mentor',function(req,res) //find all t
         })
       });
 
-  router.get('/allTheMentors',function(req,res)
+  router.get('/allTheMentors',function(req,res) //get all the unique mentors list..
 {
   filter.allTheMentors(function(err,allTheMentors)
 {
@@ -112,5 +112,15 @@ router.get('/allTheEmployeesByMentorName/:mentor',function(req,res) //find all t
     //res.send(allTheMentors);//array of mentors
 })
 });
+
+router.post('/addResource',function(req,res)
+{
+  console.log(req.body);
+  filter.addAnEmployee(req.body,function(message)
+{
+  console.log("response-----",message);
+    res.send(message);
+})
+})
 
 module.exports=router;

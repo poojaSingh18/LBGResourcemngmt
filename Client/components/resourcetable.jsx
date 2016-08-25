@@ -2,6 +2,9 @@ import React from 'react';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
+import {yellow600} from 'material-ui/styles/colors';
+
 
 export default class ResourceTable extends React.Component {
     constructor (props) {
@@ -24,17 +27,27 @@ export default class ResourceTable extends React.Component {
       var rows=[];
       console.log("resource array "+this.props.resourceArray);
       console.log(this.state.dataArray);
+
       this.props.resourceArray.forEach(function (record, i) {
-      rows.push(
-        <TableRow key={i} value={record['Emp No']}>
-          <TableRowColumn style={{whiteSpace: 'inline'}}><button className="btn btn-primary" onClick={this.handleIdClick.bind(this, i)}>{record['Emp No']}</button></TableRowColumn>
-          <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Emp Name']}</TableRowColumn>
-          <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Mentor']}</TableRowColumn>
-          <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Agile Trainings Complete? (Y/N)']}</TableRowColumn>
-          <TableRowColumn style={{whiteSpace: 'inline'}} >{record['BFSI Training Courses Complete? (Y/N)']}</TableRowColumn>
-          <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Skill Gap']}</TableRowColumn>
-        </TableRow>
-      );
+        if(Object.keys(record).length === 0){
+          rows.push(
+            <TableRow key={i}>
+              <h1 style={{textAlign: 'center', color: 'firebrick'}}><i style={{color: yellow600, fontSize: '40px'}} className="material-icons">error</i> No Data Found..!!</h1>
+            </TableRow>
+          );
+        }
+        else{
+          rows.push(
+            <TableRow key={i} value={record['Emp No']}>
+              <TableRowColumn style={{whiteSpace: 'inline'}}><button className="btn btn-primary" onClick={this.handleIdClick.bind(this, i)}>{record['Emp No']}</button></TableRowColumn>
+              <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Emp Name']}</TableRowColumn>
+              <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Mentor']}</TableRowColumn>
+              <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Agile Trainings Complete? (Y/N)']}</TableRowColumn>
+              <TableRowColumn style={{whiteSpace: 'inline'}} >{record['BFSI Training Courses Complete? (Y/N)']}</TableRowColumn>
+              <TableRowColumn style={{whiteSpace: 'inline'}} >{record['Skill Gap']}</TableRowColumn>
+            </TableRow>
+          );
+        }
       }.bind(this));
       return (
  <Paper zDepth={1} >

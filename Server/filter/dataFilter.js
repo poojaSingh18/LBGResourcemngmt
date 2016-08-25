@@ -70,7 +70,7 @@ function findAll(callback)
 
 function findAllTheEmployess(mentorName,callback)
 {
-  console.log("inside mentor filter");
+  //console.log("inside mentor filter");
   var obj;
   fs.readFile('model/employeesDetails.json', 'utf8', function (err, data) {
     if(!err)
@@ -93,7 +93,6 @@ function findAllTheEmployess(mentorName,callback)
     {
       console.log(err);
     }
-
   });
 }
 
@@ -364,6 +363,37 @@ console.log("not eero",e);
   })
 };
 
+function addAnEmployee(newResource,callback)
+{
+  var index=0;
+  var flag=false;
+  allDetails.filter(function(employee)
+  {
+    if(employee['Emp No']==newResource['Emp No'])
+      flag=true;
+      index++;
+    if(index==allDetails.length)
+      {
+        if(!flag)
+        {
+        var object=fs.readFileSync('model/employeesDetails.json', 'utf8');
+        object=JSON.parse(object);
+        object.push(newResource);
+        fs.writeFileSync('model/employeesDetails.json',JSON.stringify(object));
+        console.log("employee is added");
+        callback("success");
+      }
+      else {
+        console.log("dupilcate employee");
+        callback("failure");
+      }
+    }
+  });
+}
+
+
+
+module.exports.addAnEmployee=addAnEmployee;
 module.exports.findAll=findAll;
 module.exports.findByEmpId=findByEmpId;
 module.exports.findAllTheEmployess=findAllTheEmployess;

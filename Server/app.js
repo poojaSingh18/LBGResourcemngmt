@@ -16,10 +16,10 @@ app.use(bodyParser.json());
 //   res.sendFile(__dirname+'/views/index.html');
 // })
 
-app.use('/', function (req, res, next){
-  getDataFromExcel.getData();
-  next();
-});
+// app.use('/', function (req, res, next){
+//
+//   next();
+// });
 
 app.use('/', express.static(path.join(__dirname, '../Client')));
 
@@ -28,6 +28,7 @@ app.use('/lbgRoute',lbgRoute);
 // ---- Server port -------
 app.listen(8080,function()
 {
+  getDataFromExcel.getData();
   console.log("working....");
 });
 
