@@ -1,14 +1,15 @@
-node_xj = require("xls-to-json");
+var node_xj = require("xlsx-to-json");
 function getData(){
     node_xj({
-      input: "./model/sample-file1.xls",  // input xls
+      input: "./model/output.xlsx",  // input xls
     output: "./model/employeesDetails.json" // output json
-    //  sheet: "sheetname",  // specific sheetname
+    // sheet: "Sheet 1"  // specific sheetname
     }, function(err, result) {
       if(err) {
         console.error(err);
       } else {
         //console.log("result ---",result);
+        console.log("-----xl to json converted----");
       }
     });
 }

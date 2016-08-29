@@ -1,4 +1,8 @@
 var fs=require('fs');
+//var excel=require('json2xls');
+//var Xlsjs=require('xlsjs');
+var Index=require('../index.js')
+var xlsxWriter=require('xlsx-writestream');
 
 allDetails=[];
 function findByEmpId(empId,callback)
@@ -17,10 +21,12 @@ function findByEmpId(empId,callback)
           if(employee['Emp No']==empId)
           {
           flag=true;
+          console.log("Emp "+employee);
           object=employee;
         }
             //callback(err,employee);
         })
+        console.log(object);
         callback(err,object);
       } catch (e) {
       console.log('malformed request', e);
@@ -67,6 +73,8 @@ function findAll(callback)
 
   });
 }
+
+
 
 function findAllTheEmployess(mentorName,callback)
 {
@@ -162,6 +170,7 @@ function findAgileStats(callback)
         obj["value"]=agileNa;
         obj["color"]= 'aquamarine';
         arrObjects.push(obj);
+        console.log("arrObjects--",arrObjects);
         callback(err, arrObjects);
       } catch (e) {
 
@@ -365,6 +374,7 @@ console.log("not eero",e);
 
 function addAnEmployee(newResource,callback)
 {
+  newResource['Emp No']=Number(newResource['Emp No']);
   var index=0;
   var flag=false;
   allDetails.filter(function(employee)
@@ -376,18 +386,60 @@ function addAnEmployee(newResource,callback)
       {
         if(!flag)
         {
-        var object=fs.readFileSync('model/employeesDetails.json', 'utf8');
-        object=JSON.parse(object);
-        object.push(newResource);
-        fs.writeFileSync('model/employeesDetails.json',JSON.stringify(object));
-        console.log("employee is added");
-        callback("success");
+          console.log("inside the flag--------");
+          var object=fs.readFileSync('model/employeesDetails.json', 'utf8');
+          object=JSON.parse(object);
+          var length=0;
+
+          object.filter(function(oneObject)
+        {
+
+          if(Object.keys(oneObject)[0]!='Emp No')
+          {
+          oneObject['Emp No']=Number(oneObject['Emp No']);
+          var firstCol=Object.keys(oneObject)[0];
+          console.log("firscol-",firstCol);
+          var firstValue=oneObject[firstCol];
+          console.log("fristvalue-----",firstValue);
+          delete oneObject[firstCol];
+          console.log("befor oneObject-----",oneObject);
+          oneObject[firstCol]=firstValue;
+          console.log("afte oneObject-----",oneObject);
+        }
+          length++;
+          if(length==object.length)
+          {
+            object.push(newResource);
+            fs.writeFileSync('model/employeesDetails.json',JSON.stringify(object));
+
+            try {
+              console.log("first-- first line");
+              var writer=new xlsxWriter('model/output.xlsx',{});
+              console.log("first line--",writer);
+              writer.getReadStream().pipe(fs.createWriteStream('model/output.xlsx'));
+              console.log("Second----",writer);
+              object.filter(function(obj)
+            {
+              console.log("third");
+              console.log(writer.addRow(obj));
+            })
+            console.log("fourth");
+            writer.finalize();
+            console.log("after writing into json");
+                console.log("employee is added");
+            callback("success");
+            }
+            catch (e) {
+              console.log("file is busy----- ",e);
+            }
+          }
+        })
+        }
+        else {
+          console.log("dupilcate employee");
+          callback("failure");
+        }
       }
-      else {
-        console.log("dupilcate employee");
-        callback("failure");
-      }
-    }
   });
 }
 

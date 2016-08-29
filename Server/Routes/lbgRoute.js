@@ -13,6 +13,7 @@ router.get('/getOneById/:id',function(req,res)// find an employee by passing emp
   if(!err)
   {
     d.push(employeeObject);
+    console.log(employeeObject);
   res.send(d);
   }
   });
@@ -94,7 +95,7 @@ router.get('/allTheEmployeesByMentorName/:mentor',function(req,res) //find all t
         {
           if(!err)
             {
-              console.log("kjdfwkejdfwe",MentorStatsObj)
+              console.log("Mentors Obj",MentorStatsObj)
               res.send(MentorStatsObj);
             }
             else {
@@ -103,7 +104,7 @@ router.get('/allTheEmployeesByMentorName/:mentor',function(req,res) //find all t
         })
       });
 
-  router.get('/allTheMentors',function(req,res) //get all the unique mentors list..
+  router.get('/allTheMentors',function(req,res)
 {
   filter.allTheMentors(function(err,allTheMentors)
 {
@@ -112,7 +113,6 @@ router.get('/allTheEmployeesByMentorName/:mentor',function(req,res) //find all t
     //res.send(allTheMentors);//array of mentors
 })
 });
-
 router.post('/addResource',function(req,res)
 {
   console.log(req.body);
@@ -122,5 +122,4 @@ router.post('/addResource',function(req,res)
     res.send(message);
 })
 })
-
 module.exports=router;

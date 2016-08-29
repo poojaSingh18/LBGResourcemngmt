@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "exceljs": "0.0.3",
     "express": "^4.14.0",
-    "xls-to-json": "^0.3.2"
+    "xls-to-json": "^0.3.2",
+    "xlsx-to-json": "^0.2.4",
+    "xlsx-writestream": "^0.4.0"
   }
 }
